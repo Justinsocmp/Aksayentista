@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | ACSCI SSLG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* [ ... Keep all your Maroon CSS styles here ... ] */
+        /* Ensure these carousel styles are included so it slides! */
+        .carousel { position: relative; width: 100%; height: 500px; overflow: hidden; }
+        .carousel .list .item { position: absolute; inset: 0; opacity: 0; transition: 0.5s; background-size: cover; background-position: center; }
+        .carousel .list .item.active { opacity: 1; }
+        .carousel .list .item .content { position: absolute; bottom: 20%; left: 10%; color: #fff; z-index: 2; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="index.php" class="navbar-brand">
+                <img src="uploads/logo.png" alt="Logo">
+                <div class="brand-text-container">
+                    <span class="brand-title">ACSCI SSLG</span>
+                    <span class="brand-subtitle">Angeles City Science High School</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="index.php" class="active">Home</a>
+                <a href="About.html">About</a>
+                <a href="gallery.php">Gallery</a>
+                <a href="News.php">News</a>
+                <a href="contacts.php">Contact</a>
+            </div>
+            <a href="Login.php" class="portal-btn">Student Portal</a>
+        </div>
+    </nav>
+
+    <div class="carousel">
+        <div class="list">
+            <?php foreach ($articles as $index => $article): ?>
+            <div class="item <?= $index === 0 ? 'active' : '' ?>" 
+                 style="background-image: url('<?= htmlspecialchars($article['image']) ?>');">
+                <div class="content">
+                    <div class="title"><?= htmlspecialchars($article['title']) ?></div>
+                    <div class="name"><?= htmlspecialchars($article['category']) ?></div>
+                    <div class="des"><?= htmlspecialchars($article['description']) ?></div>
+                    <div class="btn"><a href="<?= htmlspecialchars($article['link']) ?>">See More</a></div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="arrows">
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

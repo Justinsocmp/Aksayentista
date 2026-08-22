@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | ACSCI SSLG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL STYLES
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* =========================================
+           NAVIGATION BAR
+           ========================================= */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: auto;
+            margin-right: 15px;
+        }
+
+        .brand-text-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #800000;
+            line-height: 1.2;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 400;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #800000;
+        }
+
+        .nav-links a.active {
+            background-color: #f0e6e6;
+            color: #800000;
+        }
+
+        .portal-btn {
+            background-color: #800000;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .portal-btn:hover {
+            background-color: #600000;
+        }
+
+        /* =========================================
+           PAGE HEADER
+           ========================================= */
+        .page-header {
+            background-color: #800000; 
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #ffffff;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* =========================================
+           ABOUT CONTENT SECTIONS
+           ========================================= */
+        .about-section {
+            padding: 80px 0;
+            background-color: #ffffff;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 32px;
+            color: #800000;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .about-text p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .about-image {
+            background-color: #eee;
+            height: 400px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            border: 2px dashed #ccc;
+        }
+
+        /* =========================================
+           MISSION & VISION SECTION
+           ========================================= */
+        .mission-vision {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .mv-card {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 5px solid #800000;
+        }
+
+        .mv-card h3 {
+            font-size: 24px;
+            color: #222;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .mv-card p {
+            color: #666;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* =========================================
+           HYMN SECTION
+           ========================================= */
+        .hymn-section {
+            padding: 80px 0;
+            background-color: #ffffff;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .hymn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hymn-text h2 {
+            font-size: 32px;
+            color: #800000;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hymn-text p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            border: 2px dashed #555;
+        }
+
+        /* =========================================
+           PLEDGE SECTION
+           ========================================= */
+        .pledge-section {
+            padding: 0 0 80px 0;
+            background-color: #ffffff;
+        }
+
+        .pledge-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pledge-header h2 {
+            font-size: 32px;
+            color: #800000;
+            font-weight: 800;
+        }
+
+        .pledge-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fcf4f4; 
+            padding: 50px;
+            border-radius: 8px;
+            border-top: 5px solid #800000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .pledge-box p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        /* =========================================
+           LEADERSHIP / OFFICERS SECTION (LAYERED)
+           ========================================= */
+        .officers-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            color: #800000;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 50px;
+        }
+
+        .officers-category {
+            text-align: center;
+            font-size: 24px;
+            color: #222;
+            margin: 40px 0 30px;
+            font-weight: 700;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* This is the new layered tier system */
+        .officer-tier {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Keeps them responsive on mobile */
+        }
+
+        .officer-card {
+            text-align: center;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            width: 220px; /* Fixed width prevents stretching */
+        }
+
+        .officer-photo {
+            width: 130px;
+            height: 130px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 12px;
+            border: 3px solid #800000;
+            overflow: hidden;
+        }
+
+        .officer-card h4 {
+            font-size: 16px;
+            color: #222;
+            margin-bottom: 5px;
+        }
+
+        .officer-card p {
+            font-size: 13px;
+            color: #800000;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background-color: #800000;
+            color: #ffffff;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo-wrap {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-wrap img {
+            width: 60px;
+            margin-right: 15px;
+            background: white;
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        .footer-brand h2 {
+            font-size: 20px;
+            color: #ffffff; 
+            margin-bottom: 15px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .social-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .social-circle:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .footer-links h3 {
+            color: #ffffff; 
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .footer-contact h3 {
+            color: #ffffff; 
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .contact-icon {
+            margin-right: 15px;
+            min-width: 20px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .footer-bottom-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .footer-bottom-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid, .mv-grid, .hymn-grid, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .footer-bottom-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+        
+  
+   
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="index.html" class="navbar-brand">
+                <img src="uploads/logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <div class="brand-text-container">
+                    <span class="brand-title">ACSCI SSLG</span>
+                    <span class="brand-subtitle">Angeles City Science High School</span>
+                </div>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="About.html" class="active">About</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="News.html">News & Events</a>
+                <a href="contacts.html">Contact</a>
+            </div>
+
+            <div class="nav-action">
+                <a href="Login.html" class="portal-btn">Student Portal</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="container">
+            <h1>About Us</h1>
+            <p>Discover the history, mission, and leadership of the ACSCI SSLG.</p>
+        </div>
+    </header>
+
+    <!-- WHO WE ARE SECTION -->
+    <section class="about-section">
+        <div class="container about-grid">
+            <div class="about-text">
+                <h2>Who We Are</h2>
+                <p>The Supreme Student Learner Government (SSLG) of Angeles City Science High School is the highest governing student body dedicated to the welfare and representation of the student populace. We serve as the bridge between the students and the school administration.</p>
+                <p>Our core focus is to foster a proactive, inclusive, and innovative school environment. Through various programs, initiatives, and community engagements, we aim to hone the leadership skills of every ACSci student while upholding academic excellence.</p>
+            </div>
+            <div class="about-image">
+                [School/Organization Image Placeholder]
+            </div>
+        </div>
+    </section>
+
+    <!-- MISSION & VISION SECTION -->
+    <section class="mission-vision">
+        <div class="container mv-grid">
+            <div class="mv-card">
+                <h3>Our Mission</h3>
+                <p>To empower the student body through active representation, transparent governance, and the execution of meaningful projects that promote holistic development, social responsibility, and academic excellence within the campus and beyond.</p>
+            </div>
+            <div class="mv-card">
+                <h3>Our Vision</h3>
+                <p>We envision a united, dynamic, and forward-thinking student community where every learner is equipped with the leadership skills and values necessary to become catalysts for positive change in the modern world.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HYMN SECTION -->
+    <section class="hymn-section">
+        <div class="container hymn-grid">
+            <div class="video-wrapper">
+                <div class="video-placeholder">
+                    [Video Placeholder: Insert ACSci Hymn Here]
+                </div>
+            </div>
+            <div class="hymn-text">
+                <h2>ACSci Hymn</h2>
+                <p>The ACSci Hymn embodies the spirit, ideals, and pride of the Angeles City Science High School. It serves as a reminder of our commitment to excellence, integrity, and service to our community and our nation. Watch the video to learn the lyrics and sing along with our student body.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLEDGE SECTION -->
+    <section class="pledge-section">
+        <div class="container">
+            <div class="pledge-header">
+                <h2>Promiso dela Estudyante</h2>
+            </div>
+            <div class="pledge-box">
+                <p>
+                    [Insert the text of the Promiso dela Estudyante here. Replace this placeholder text with the actual words of the student pledge.]
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFFICERS / LEADERSHIP SECTION (FIXED LAYERS) -->
+    <section class="officers-section">
+        <div class="container">
+            <h2 class="section-title">Meet Your Student Leaders</h2>
+            <p class="section-subtitle">Dedicated to serving the student body for the current academic year.</p>
+
+            <h3 class="officers-category">Core Officers</h3>
+            
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>President</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Vice President</p>
+                </div>
+            </div>
+
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Secretary</p>
+                </div>
+            </div>
+
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Treasurer</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Auditor</p>
+                </div>
+            </div>
+
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Public Information Officer</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Protocol Officer</p>
+                </div>
+            </div>
+
+            <!-- GRADE LEVEL REPRESENTATIVES -->
+            <h3 class="officers-category">Grade Level Representatives</h3>
+            
+            <!-- Layer 5: Grade 7 -->
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 7 Representative</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 7 Representative</p>
+                </div>
+            </div>
+
+            <!-- Layer 6: Grade 8 -->
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 8 Representative</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 8 Representative</p>
+                </div>
+            </div>
+
+            <!-- Layer 7: Grade 9 -->
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 9 Representative</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 9 Representative</p>
+                </div>
+            </div>
+
+            <!-- Layer 8: Grade 10 -->
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 10 Representative</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 10 Representative</p>
+                </div>
+            </div>
+
+            <!-- Layer 9: Grade 11 -->
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 11 Representative</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 11 Representative</p>
+                </div>
+            </div>
+
+            <!-- Layer 10: Grade 12 -->
+            <div class="officer-tier">
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 12 Representative</p>
+                </div>
+                <div class="officer-card">
+                    <div class="officer-photo">[Photo]</div>
+                    <h4>Student Name</h4>
+                    <p>Grade 12 Representative</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo-wrap">
+                        <img src="uploads/logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
+                    </div>
+                    <h2>ACSCI SSLG</h2>
+                    <p>Empowering students through quality STEM education, proactive leadership, and community innovation.</p>
+                    <div class="social-icons">
+                        <div class="social-circle">FB</div>
+                        <div class="social-circle">IG</div>
+                        <div class="social-circle">TK</div>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="About.html">About</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="News.html">News & Events</a></li>
+                        <li><a href="contacts.html">Contacts</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>Angeles City Science High School,<br>Angeles City, Pampanga,<br>Philippines</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span>(045) 887 5502</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">✉️</span>
+                        <span>acscisslg@example.com</span>
+                    </div>
+                    <div class="contact-item" style="margin-top: 15px;">
+                        <span>Monday - Friday: 6:00 AM - 5:00 PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 ACSCI SSLG. All rights reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Use</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
