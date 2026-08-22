@@ -2,8 +2,8 @@
 // ── Database connection ───────────────────────────────────────
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'acsci_sslg');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', 'acsciadmin');
+define('DB_PASS', 'Joshy202627@');
 
 try {
     $pdo = new PDO(

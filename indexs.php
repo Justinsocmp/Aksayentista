@@ -604,24 +604,28 @@ if(isset($conn)) {
 
         <!-- Features Section -->
         <section class="features">
-            <div class="feature-card">
-                <h3>Academic Excellence</h3>
-                <p>Quality ICT education for future professionals</p>
-            </div>
-            <div class="feature-card">
-                <h3>Modern Facilities</h3>
-                <p>State-of-the-art computer laboratories</p>
-            </div>
-            <div class="feature-card">
-                <h3>Expert Faculty</h3>
-                <p>Learn from industry professionals</p>
-            </div>
+        <div class="feature-card">
+    <h3>Academic Excellence</h3>
+    <p>Rigorous STEM curriculum fostering innovation, critical thinking, and scientific research.</p>
+</div>
+<div class="feature-card">
+    <h3>Advanced Science & Tech Labs</h3>
+    <p>Equipped with specialized physics, chemistry, biology, and robotics laboratories.</p>
+</div>
+<div class="feature-card">
+    <h3>Competitive Culture</h3>
+    <p>Proven track record of excellence in national and international science and math olympiads.</p>
+</div>
+<div class="feature-card">
+    <h3>Expert STEM Faculty</h3>
+    <p>Dedicated mentors and subject-matter specialists guiding student research and capstone projects.</p>
+</div>
         </section>
 
         <!-- Image Showcase -->
         <section class="image-showcase">
             <div class="showcase-text">
-                <h2>Life at CMRICTHS</h2>
+                <h2>Life at ACSCI</h2>
                 <p>Experience excellence in ICT education with our state-of-the-art facilities and dynamic learning environment.</p>
             </div>
             <div class="showcase-grid">
