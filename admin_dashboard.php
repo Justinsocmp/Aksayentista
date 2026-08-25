@@ -312,11 +312,11 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                 <span>  Carousel Slide Maker</span>
             </a>
             <div class="sidebar-divider"></div>
-            <a href="indexs.php" class="sidebar-btn">  Main Website</a>
-            <a href="calendar.php" class="sidebar-btn">📅 View Calendar</a>
-            <a href="about.php" class="sidebar-btn">  About Page</a>
-            <a href="contacts.php" class="sidebar-btn">  Contact Center</a>
-            <a href="logout.php" class="sidebar-btn" style="color: #dc2626; margin-top: auto;">  System Logout</a>
+            <a href="aksayentista.works" class="sidebar-btn">  Main Website</a>
+            <a href="/calendar/" class="sidebar-btn">📅 View Calendar</a>
+            <a href="/about/" class="sidebar-btn">  About Page</a>
+            <a href="/contacts/" class="sidebar-btn">  Contact Center</a>
+            <a href="/logout/" class="sidebar-btn" style="color: #dc2626; margin-top: auto;">  System Logout</a>
         </aside>
 
         <main class="main-view-pane">
