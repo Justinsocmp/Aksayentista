@@ -613,10 +613,10 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="indexs.php">Home</a></li>
-                <li><a href="about.php" class="active">About</a></li>
-                <li><a href="Gallery.php">Gallery</a></li>
-                <li><a href="contacts.php">Contact</a></li>
+                <li><a href="aksayentista.com">Home</a></li>
+                <li><a href="/about/" class="active">About</a></li>
+                <li><a href="/Gallery/">Gallery</a></li>
+                <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
                 <?php if($isLoggedIn): ?>
