@@ -432,6 +432,7 @@ $isLoggedIn = true;
             <ul class="nav-links">
                 <li><a href="aksayentista.works">Home</a></li>
                 <li><a href="/about/">About</a></li>
+                <li><a href="/calendar/">Calendar</a></li>
                 <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
