@@ -430,9 +430,9 @@ $isLoggedIn = true;
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="indexs.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="contacts.php">Contact</a></li>
+                <li><a href="aksayentista.works">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
                 <button class="portal-btn" id="userMenuBtn">
