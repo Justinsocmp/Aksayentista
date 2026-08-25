@@ -613,7 +613,7 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="aksayentista.com">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/about/" class="active">About</a></li>
                 <li><a href="/Gallery/">Gallery</a></li>
                 <li><a href="/contacts/">Contact</a></li>
