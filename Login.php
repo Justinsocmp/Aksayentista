@@ -133,10 +133,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="indexs.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="Gallery.php">Gallery</a></li>
-                <li><a href="contacts.php">Contact</a></li>
+                <li><a href="aksayentista.works">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/Calendar/">Gallery</a></li>
+                <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
                 <a href="Login.php" class="portal-btn">Student Portal</a>
