@@ -131,9 +131,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="aksayentista.works">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/about/">About</a></li>
-                <li><a href="/Calendar/">Gallery</a></li>
+                <li><a href="/Calendar/">Calendar</a></li>
                 <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
@@ -277,7 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>&copy; <?php echo date('Y'); ?> CMRICTHS. All rights reserved.</div>
+                <div>&copy; <?php echo date('Y'); ?> ACSCI SSLG. All rights reserved.</div>
                 <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
             </div>
         </div>
