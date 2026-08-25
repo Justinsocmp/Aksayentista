@@ -537,7 +537,7 @@ if(isset($conn)) {
             <ul class="nav-links">
     <li><a href="indexs.php" class="active">Home</a></li>
     <li><a href="about.php">About</a></li>
-    <li><a href="calendar.php">Calendar</a></li>
+    <li><a href="acsci/calendar.php">Calendar</a></li>
     <li><a href="contacts.php">Contact</a></li>
 </ul>
             <div class="nav-action">
