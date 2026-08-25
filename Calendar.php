@@ -138,10 +138,10 @@ function getStatusColor($status) {
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="indexs.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="calendar.php" class="active">Calendar</a></li>
-                <li><a href="contacts.php">Contact</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/calendar/" class="active">Calendar</a></li>
+                <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
                 <?php if($isLoggedIn): ?>
@@ -211,11 +211,11 @@ function getStatusColor($status) {
                 <div class="footer-contact">
                     <h3>Contact Information</h3>
                     <div class="contact-item"><span>Angeles City Science High School</span></div>
-                    <div class="contact-item"><span>(045) 887 5502</span></div>
+                    <div class="contact-item"><span>09625410980</span></div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>&copy; <?php echo date('Y'); ?> CMRICTHS. All rights reserved.</div>
+                <div>&copy; <?php echo date('Y'); ?> ACSCI SSLG. All rights reserved.</div>
             </div>
         </div>
     </footer>
