@@ -202,10 +202,10 @@ function getStatusColor($status) {
                 <div class="footer-links">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="indexs.php">Home</a></li>
-                        <li><a href="about.php">About</a></li>
-                        <li><a href="calendar.php">Calendar</a></li>
-                        <li><a href="contacts.php">Contacts</a></li>
+                        <li><a href="aksayentista.works">Home</a></li>
+                        <li><a href="/about/">About</a></li>
+                        <li><a href="/calendar/">Calendar</a></li>
+                        <li><a href="/contacts/">Contacts</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
