@@ -102,6 +102,7 @@ if (isset($_GET['id']) && isset($conn)) {
             <ul class="nav-links">
                 <li><a href="aksayentista.works">Home</a></li>
                 <li><a href="/about/">About</a></li>
+                 <li><a href="/calendar/">Calendar</a></li>
                 <li><a href="/contacts/">Contact</a></li>
             </ul>
             <div class="nav-action">
@@ -146,7 +147,7 @@ if (isset($_GET['id']) && isset($conn)) {
     <footer>
         <div class="container">
             <div class="footer-bottom">
-                &copy; <?php echo date('Y'); ?> CMRICTHS. All rights reserved.
+                &copy; <?php echo date('Y'); ?> ACSCI SSLG. All rights reserved.
             </div>
         </div>
     </footer>
