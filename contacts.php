@@ -616,7 +616,7 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>&copy; <?php echo date('Y'); ?> CMRICTHS. All rights reserved.</div>
+                <div>&copy; <?php echo date('Y'); ?> ACSCI SSLG. All rights reserved.</div>
                 <div class="footer-bottom-links">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Use</a>
