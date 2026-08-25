@@ -478,7 +478,7 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
             <ul class="nav-links">
                 <li><a href="aksayentista.works">Home</a></li>
                 <li><a href="/about/">About</a></li>
-                <li><a href="/Calendar/">Gallery</a></li>
+                <li><a href="/Calendar/">Calendar</a></li>
                 <li><a href="/contacts/" class="active">Contact</a></li>
             </ul>
             <div class="nav-action">
