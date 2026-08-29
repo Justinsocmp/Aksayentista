@@ -66,9 +66,9 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
             NAVIGATION BAR            
            ========================================= */
         .navbar {
-            background-color: #ffffff;
+            background: #ffffff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
+            position: sticky; top: 0;
             top: 0;
             z-index: 1000;
         }
