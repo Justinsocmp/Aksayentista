@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
-$username = "root"; 
-$password = "";     
+$username = "acsciadmin"; 
+$password = "Joshy202627@";     
 $database = "acsci_sslg";
 
 $conn = mysqli_connect($host, $username, $password, $database);

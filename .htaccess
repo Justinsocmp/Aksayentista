@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# 1. Remove trailing slashes (Redirects /about/ to /about)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# 2. Invisibly attach .php to URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
