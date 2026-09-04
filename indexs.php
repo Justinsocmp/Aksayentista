@@ -46,9 +46,12 @@ if(isset($conn)) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACSCI SSLG</title>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
+<link rel="icon" type="image/png" href="/pic/SSLG.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
          
     <style>
@@ -528,7 +531,7 @@ if(isset($conn)) {
    <nav class="navbar">
         <div class="container nav-inner">
             <a href="indexs.php" class="navbar-brand">
-                <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <img src="pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
                 <div class="brand-text-container">
                     <span class="brand-title">ACSCI</span>
                     <span class="brand-subtitle">Angeles City Science High School</span>
@@ -546,12 +549,21 @@ if(isset($conn)) {
             <?php echo htmlspecialchars($userData['Username']); ?> ▾
         </button>
         <div class="user-dropdown-menu" id="userDropdown">
-            <?php if(isset($userData['Role']) && $userData['Role'] === 'admin'): ?>
-                <a href="admin_dashboard.php">🛠️ Admin Control Room</a>
-            <?php else: ?>
-                <a href="dashboard.php">👨‍🎓 My Student Dashboard</a>
-            <?php endif; ?>
-            
+<a href="dashboard.php">👨‍🎓 My Student Dashboard</a>
+
+        <?php 
+        if (
+            (isset($userData['Role']) && in_array($userData['Role'], ['super_admin', 'admin', 'journalist'])) || 
+            !empty($userData['access_accounts']) || 
+            !empty($userData['access_directory']) || 
+            !empty($userData['access_calendar']) || 
+            !empty($userData['access_slides']) || 
+            !empty($userData['has_eval_access'])
+        ): 
+        ?>
+            <a href="admin_dashboard.php">🛠️ Admin Control Room</a>
+        <?php endif; ?>
+
             <div class="dropdown-divider"></div>
             <a href="logout.php" style="color: #dc2626; font-weight: 600;">🚪 System Logout</a>
         </div>
@@ -662,7 +674,7 @@ if(isset($conn)) {
             <div class="footer-grid">
             <div class="footer-brand">
                     <div class="footer-logo-wrap">
-                        <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
+                        <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
                     </div>
                     <h2>ACSCI</h2>
                     <p>Empowering students through quality STEM education, proactive leadership, and community innovation.</p>

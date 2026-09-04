@@ -55,9 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
 <!DOCTYPE html> 
 <html lang="en"> 
 <head>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up | ACSCI</title>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --maroon: #800000; --white: #ffffff; --light-bg: #f8f9fa; --text-dark: #333333; --text-light: #555555; }
@@ -124,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
     <nav class="navbar">
         <div class="container nav-inner">
             <a href="indexs.php" class="navbar-brand">
-                <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
                 <div class="brand-text-container">
                     <span class="brand-title">ACSCI</span>
                     <span class="brand-subtitle">Angeles City Science High School</span>
@@ -223,14 +225,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
                                 <option value="Protocol Office">Protocol Office</option>
                                 <option value="Creatives Department">Creatives Department</option>
                                 <option value="Production Department">Production Department</option>
-                            </select>
+<option value="Others">Others (e.g., School Press)</option>                            
+</select>
                         </div>
                         <div class="form-group">
                             <label>Position / Role</label>
                             <select name="position" id="positionSelect">
                                 <option value="">Select Position...</option>
                                 <!-- Populated dynamically by JavaScript -->
-                            </select>
+			</select>
                         </div>
                     </div>
 
@@ -314,36 +317,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($conn)) {
             }
         });
 
-        // Dynamic Position Populator based on Office Selection
-        function updatePositions() {
-            const office = document.getElementById('officeSelect').value;
-            const positionSelect = document.getElementById('positionSelect');
-            
-            // Reset position dropdown
-            positionSelect.innerHTML = '<option value="">Select Position...</option>';
-            
-            if (office === "Office of the President" || office === "Office of the Vice President") {
-                const opOvpRoles = [
-                    "Chief of Staff",
-                    "Deputy Chief of Staff",
-                    "Chief Executive Officer",
-                    "Project Management Officer",
-                    "Creations and Quality Officer",
-                    "Communications Officer",
-                    "Human Resources Manager",
-                    "Chief Information Manager",
-                    "Operations Director"
-                ];
-                
-                opOvpRoles.forEach(role => {
-                    positionSelect.add(new Option(role, role));
-                });
-            } else if (office !== "") {
-                // Generic roles for other offices
-                positionSelect.add(new Option("Department Head", "Department Head"));
-                positionSelect.add(new Option("Staff Member", "Staff Member"));
-            }
-        }
+// Dynamic Position Populator based on Office Selection
+function updatePositions() {
+    const office = document.getElementById('officeSelect').value;
+    const positionSelect = document.getElementById('positionSelect');
+
+    // Reset styling in case they switch back from "Others" to a normal office
+    positionSelect.style.pointerEvents = 'auto';
+    positionSelect.style.background = '';
+    positionSelect.style.opacity = '1';
+
+    // Reset position dropdown
+    positionSelect.innerHTML = '<option value="">Select Position...</option>';
+
+    if (office === "Office of the President" || office === "Office of the Vice President") {
+        const opOvpRoles = [
+            "Chief of Staff",
+            "Deputy Chief of Staff",
+            "Chief Executive Officer",
+            "Project Management Officer",
+            "Creations and Quality Officer",
+            "Communications Officer",
+            "Human Resources Manager",
+            "Chief Information Manager",
+            "Operations Director"
+        ];
+        opOvpRoles.forEach(role => {
+            positionSelect.add(new Option(role, role));
+        });
+    } else if (office === "Others") {
+        // Lock the position to Others
+        positionSelect.innerHTML = '<option value="Others">Others</option>';
+        positionSelect.style.pointerEvents = 'none';
+        positionSelect.style.background = '#f1f5f9';
+        positionSelect.style.opacity = '0.7';
+    } else if (office !== "") {
+        // Generic roles for other offices
+        positionSelect.add(new Option("Department Head", "Department Head"));
+        positionSelect.add(new Option("Staff Member", "Staff Member"));
+    }
+}
+
     </script>
 </body>
 </html>

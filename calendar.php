@@ -39,9 +39,11 @@ $projects_json = json_encode($projects);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Calendar | ACSCI</title>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --maroon: #800000; --white: #ffffff; --light-bg: #f8f9fa; --text-dark: #333333; --text-light: #555555; --border: #e2e8f0; }
@@ -127,7 +129,7 @@ $projects_json = json_encode($projects);
     <nav class="navbar">
         <div class="container nav-inner">
             <a href="indexs.php" class="navbar-brand">
-                <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
                 <div class="brand-text-container">
                     <span class="brand-title">ACSCI</span>
                     <span class="brand-subtitle">Angeles City Science High School</span>
@@ -148,7 +150,10 @@ $projects_json = json_encode($projects);
                         <?php else: ?>
                             <a href="dashboard.php">Student Dashboard</a>
                         <?php endif; ?>
-                        <div class="dropdown-divider"></div>
+<?php if($isLoggedIn && (!empty($userData['has_eval_access']) || (isset($userData['Role']) && $userData['Role'] === 'admin'))): ?>
+    <a href="evaluations.php">Performance Evaluation</a>
+<?php endif; ?>                        
+<div class="dropdown-divider"></div>
                         <a href="logout.php" style="color: #dc2626; font-weight: 600;">System Logout</a>
                     </div>
                 <?php else: ?>

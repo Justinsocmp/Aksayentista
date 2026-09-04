@@ -32,9 +32,11 @@ $isLoggedIn = true;
 <!DOCTYPE html> 
 <html lang="en"> 
 <head>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | ACSCI</title>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -423,7 +425,7 @@ $isLoggedIn = true;
     <nav class="navbar">
         <div class="container nav-inner">
             <a href="indexs.php" class="navbar-brand">
-                <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
                 <div class="brand-text-container">
                     <span class="brand-title">ACSCI</span>
                     <span class="brand-subtitle">Angeles City Science High School</span>
@@ -544,7 +546,7 @@ $isLoggedIn = true;
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="footer-logo-wrap">
-                        <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
+                        <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
                     </div>
                     <h2>ACSCI</h2>
                     <p>Empowering students through quality STEM education, proactive leadership, and community innovation.</p>

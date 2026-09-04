@@ -30,9 +30,11 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | ACSCI</title>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
          
     <style>
@@ -606,7 +608,7 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
     <nav class="navbar">
         <div class="container nav-inner">
             <a href="indexs.php" class="navbar-brand">
-                <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
                 <div class="brand-text-container">
                     <span class="brand-title">ACSCI</span>
                     <span class="brand-subtitle">Angeles City Science High School</span>
@@ -629,7 +631,11 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
                         <?php else: ?>
                             <a href="dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <div class="dropdown-divider"></div>
+                        
+<?php if($isLoggedIn && (!empty($userData['has_eval_access']) || (isset($userData['Role']) && $userData['Role'] === 'admin'))): ?>
+    <a href="evaluations.php">Performance Evaluation</a>
+<?php endif; ?>
+<div class="dropdown-divider"></div>
                         <a href="logout.php" style="color: #dc2626; font-weight: 600;">System Logout</a>
                     </div>
                 <?php else: ?>
@@ -905,7 +911,7 @@ if(!empty($_SESSION["User_ID"]) && isset($conn)){
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="footer-logo-wrap">
-                        <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
+                        <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
                     </div>
                     <h2>ACSCI</h2>
                     <p>Empowering students through quality STEM education, proactive leadership, and community innovation.</p>

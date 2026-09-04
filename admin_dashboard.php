@@ -18,13 +18,24 @@ if (!empty($_SESSION["User_ID"])) {
 }
 
 // Safe Account Reader
-$admin_check = mysqli_query($conn, "SELECT * FROM table_user WHERE Username='josh_ocampo' LIMIT 1");
+$admin_check = mysqli_query($conn, "SELECT * FROM table_user WHERE User_ID='$User_ID' LIMIT 1");
 if ($admin_check && mysqli_num_rows($admin_check) > 0) {
     $adminData = mysqli_fetch_assoc($admin_check);
 } else {
-    $adminData = ['Username' => 'josh_ocampo_local'];
+    header("Location: logout.php");
+    exit();
 }
 
+$is_super_admin = ($adminData['Role'] === 'super_admin');
+$acc_accounts = $adminData['access_accounts'] ?? 0;
+$acc_dir = $adminData['access_directory'] ?? 0;
+$acc_cal = $adminData['access_calendar'] ?? 0;
+$acc_slides = $adminData['access_slides'] ?? 0;
+$acc_eval = $adminData['has_eval_access'] ?? 0;
+$user_role = $adminData['Role'] ?? 'user';
+$user_office = $adminData['office'] ?? '';
+$has_eval_access = $adminData['has_eval_access'] ?? 0;
+$is_super_admin = ($user_role === 'super_admin');
 // Global Message Status Trackers
 $update_msg = "";
 $error_msg = "";
@@ -79,20 +90,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_project_status'
     }
 }
 
-// Handle Admin Updating a User's Office and Position
+// Handle Admin Updating a User's Office, Position, and Role
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_office_role'])) {
     $edit_user_id = mysqli_real_escape_string($conn, $_POST['edit_user_id']);
     $new_office = mysqli_real_escape_string($conn, $_POST['new_office']);
     $new_position = mysqli_real_escape_string($conn, $_POST['new_position']);
+    $new_role = mysqli_real_escape_string($conn, $_POST['new_role']); // New Role Variable
     
-    $update_query = "UPDATE table_user SET office='$new_office', position='$new_position' WHERE User_ID='$edit_user_id'";
+    $update_query = "UPDATE table_user SET office='$new_office', position='$new_position', Role='$new_role' WHERE User_ID='$edit_user_id'";
     if(mysqli_query($conn, $update_query)) {
-        $update_msg = "Successfully updated the Office and Position for User #$edit_user_id!";
+        $update_msg = "Successfully updated the Office, Position, and Access Role for User #$edit_user_id!";
     } else {
         $error_msg = "Failed to update user office/role.";
     }
 }
+// Handle Access Control Updates
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_permissions'])) {
+    $perm_user_id = intval($_POST['perm_user_id']);
+    $p_acc = isset($_POST['p_acc']) ? 1 : 0;
+    $p_dir = isset($_POST['p_dir']) ? 1 : 0;
+    $p_cal = isset($_POST['p_cal']) ? 1 : 0;
+    $p_sli = isset($_POST['p_sli']) ? 1 : 0;
+    $p_eva = isset($_POST['p_eva']) ? 1 : 0;
 
+    mysqli_query($conn, "UPDATE table_user SET access_accounts='$p_acc', access_directory='$p_dir', access_calendar='$p_cal', access_slides='$p_sli', has_eval_access='$p_eva' WHERE User_ID='$perm_user_id'");
+    $update_msg = "Specific tab access updated successfully for User #$perm_user_id!";
+}
 // Handle Account Expiration Configurations
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save_config'])) {
     $value = intval($_POST['expiry_value']);
@@ -160,6 +183,132 @@ if (isset($_GET['action'])) {
 }
 
 // Read System Database Status States
+// Handle Administrative Action Links 
+if (isset($_GET['action'])) {
+    $target_id = mysqli_real_escape_string($conn, $_GET['id']);
+    
+    if ($_GET['action'] === 'verify') {
+        mysqli_query($conn, "UPDATE table_user SET is_verified = 1, verification_code = NULL WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'expire') {
+        mysqli_query($conn, "UPDATE table_user SET code_created_at = '2000-01-01 00:00:00' WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'delete' && $target_id != $User_ID) {
+        mysqli_query($conn, "DELETE FROM table_user WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'delete_slide') {
+        mysqli_query($conn, "DELETE FROM articles WHERE id = '$target_id'");
+        header("Location: admin_dashboard.php?tab=slides");
+        exit();
+    } elseif ($_GET['action'] === 'delete_project') {
+        mysqli_query($conn, "DELETE FROM projects WHERE id = '$target_id'");
+        header("Location: admin_dashboard.php?tab=calendar");
+        exit();
+    }
+}
+
+// Read System Database Status States
+// Handle Administrative Action Links 
+if (isset($_GET['action'])) {
+    $target_id = mysqli_real_escape_string($conn, $_GET['id']);
+    
+    if ($_GET['action'] === 'verify') {
+        mysqli_query($conn, "UPDATE table_user SET is_verified = 1, verification_code = NULL WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'expire') {
+        mysqli_query($conn, "UPDATE table_user SET code_created_at = '2000-01-01 00:00:00' WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'delete' && $target_id != $User_ID) {
+        mysqli_query($conn, "DELETE FROM table_user WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'delete_slide') {
+        mysqli_query($conn, "DELETE FROM articles WHERE id = '$target_id'");
+        header("Location: admin_dashboard.php?tab=slides");
+        exit();
+    } elseif ($_GET['action'] === 'delete_project') {
+        mysqli_query($conn, "DELETE FROM projects WHERE id = '$target_id'");
+        header("Location: admin_dashboard.php?tab=calendar");
+        exit();
+    }
+}
+// Read System Database Status States
+// Handle Evaluation Submission
+$indicators = [
+    "Reports to meetings on time", "Uses time efficiently", "Good knowledge of SSLG initiatives",
+    "Organizes and works in a professional manner", "Willingly accepts work assignments",
+    "Willingly accepts work assignments not directly", "Performs duties with little or no supervision",
+    "Performs duties well under pressure", "Meets deadlines punctually",
+    "Communicates clearly during meetings", "Communicates clearly on social media outlets",
+    "Works well with team members without friction", "Accepts constructive criticism",
+    "Demonstrates effective leadership skills"
+];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_eval'])) {
+    $evaluatee_id = intval($_POST['evaluatee_id']);
+    $evaluator_name = mysqli_real_escape_string($conn, $_POST['evaluator_name']);
+    $assessment_date = mysqli_real_escape_string($conn, $_POST['assessment_date']);
+    $comments = mysqli_real_escape_string($conn, $_POST['comments']);
+    
+    $ratings = [];
+    $total_sum = 0;
+    $count = count($indicators);
+
+    foreach ($indicators as $idx => $ind) {
+        $val = isset($_POST['ind_' . $idx]) ? intval($_POST['ind_' . $idx]) : 0;
+        $ratings[$ind] = $val;
+        $total_sum += $val;
+    }
+
+    $final_score = round($total_sum / $count, 2);
+    $ratings_json = mysqli_real_escape_string($conn, json_encode($ratings));
+
+    $insert_eval = "INSERT INTO evaluations (evaluatee_id, evaluator_name, assessment_date, ratings, total_score, comments) 
+                    VALUES ('$evaluatee_id', '$evaluator_name', '$assessment_date', '$ratings_json', '$final_score', '$comments')";
+
+    if(mysqli_query($conn, $insert_eval)) {
+        $update_msg = "Evaluation successfully submitted with a score of $final_score!";
+    } else {
+        $error_msg = "Failed to save evaluation.";
+    }
+}
+// Handle Administrative Action Links 
+if (isset($_GET['action'])) {
+    $target_id = mysqli_real_escape_string($conn, $_GET['id']);
+    
+    if ($_GET['action'] === 'verify') {
+        mysqli_query($conn, "UPDATE table_user SET is_verified = 1, verification_code = NULL WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'expire') {
+        mysqli_query($conn, "UPDATE table_user SET code_created_at = '2000-01-01 00:00:00' WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'delete' && $target_id != $User_ID) {
+        mysqli_query($conn, "DELETE FROM table_user WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=accounts");
+        exit();
+    } elseif ($_GET['action'] === 'delete_slide') {
+        mysqli_query($conn, "DELETE FROM articles WHERE id = '$target_id'");
+        header("Location: admin_dashboard.php?tab=slides");
+        exit();
+    } elseif ($_GET['action'] === 'delete_project') {
+        mysqli_query($conn, "DELETE FROM projects WHERE id = '$target_id'");
+        header("Location: admin_dashboard.php?tab=calendar");
+        exit();
+    } elseif ($_GET['action'] === 'toggle_eval') {
+        $new_status = intval($_GET['status']);
+        mysqli_query($conn, "UPDATE table_user SET has_eval_access = '$new_status' WHERE User_ID = '$target_id'");
+        header("Location: admin_dashboard.php?tab=directory");
+        exit();
+    }
+}
+// Read System Database Status States
 $config_query = mysqli_query($conn, "SELECT config_value FROM table_config WHERE config_key='verification_expiry_limit'");
 $current_expiry = (mysqli_num_rows($config_query) > 0) ? mysqli_fetch_assoc($config_query)['config_value'] : "1 hour";
 preg_match('/(\d+)\s+(\w+)/', $current_expiry, $matches);
@@ -170,7 +319,16 @@ $current_unit = $matches[2] ?? "hour";
 $users_list = mysqli_query($conn, "SELECT * FROM table_user ORDER BY User_ID DESC");
 $articles_list = mysqli_query($conn, "SELECT * FROM articles ORDER BY sort_order ASC, id ASC");
 $projects_list = mysqli_query($conn, "SELECT * FROM projects ORDER BY start_date ASC");
-
+if ($is_super_admin) {
+    // Super Admins see all departments
+    $eval_members = mysqli_query($conn, "SELECT User_ID, full_name, Username, office, position FROM table_user ORDER BY full_name ASC");
+    $eval_records = mysqli_query($conn, "SELECT e.*, u.full_name, u.Username, u.office, u.position FROM evaluations e JOIN table_user u ON e.evaluatee_id = u.User_ID ORDER BY e.id DESC");
+} else {
+    // Department Heads ONLY see their own office members
+    $my_office = mysqli_real_escape_string($conn, $user_office);
+    $eval_members = mysqli_query($conn, "SELECT User_ID, full_name, Username, office, position FROM table_user WHERE office = '$my_office' ORDER BY full_name ASC");
+    $eval_records = mysqli_query($conn, "SELECT e.*, u.full_name, u.Username, u.office, u.position FROM evaluations e JOIN table_user u ON e.evaluatee_id = u.User_ID WHERE u.office = '$my_office' ORDER BY e.id DESC");
+}
 // Directory Filter Query
 $office_filter = isset($_GET['filter_office']) ? mysqli_real_escape_string($conn, $_GET['filter_office']) : '';
 $directory_sql = "SELECT * FROM table_user";
@@ -186,9 +344,11 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | ACSCI</title>
+    <link rel="icon" type="image/png" href="/pic/SSLG.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -283,7 +443,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
     <nav class="navbar">
         <div class="nav-inner">
             <a href="indexs.php" class="navbar-brand">
-                <img src="logo.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+                <img src="/pic/SSLG.png" alt="ACSci Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
                 <div class="brand-text-container">
                     <span class="brand-title">ACSCI Control Room</span>
                     <span class="brand-subtitle">Angeles City Science High School</span>
@@ -297,30 +457,37 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
 
     <div class="dashboard-layout">
         
-        <aside class="sidebar">
-            <a href="admin_dashboard.php?tab=accounts" class="sidebar-btn <?php echo ($active_tab === 'accounts') ? 'active' : ''; ?>">
-                <span>  System Accounts</span>
-            </a>
-            <a href="admin_dashboard.php?tab=directory" class="sidebar-btn <?php echo ($active_tab === 'directory') ? 'active' : ''; ?>">
-                <span>  User Directory</span>
-            </a>
-            <!-- NEW CALENDAR TAB -->
-            <a href="admin_dashboard.php?tab=calendar" class="sidebar-btn <?php echo ($active_tab === 'calendar') ? 'active' : ''; ?>">
-                <span>📅 Project Calendar</span>
-            </a>
-            <a href="admin_dashboard.php?tab=slides" class="sidebar-btn <?php echo ($active_tab === 'slides') ? 'active' : ''; ?>">
-                <span>  Carousel Slide Maker</span>
-            </a>
-            <div class="sidebar-divider"></div>
-            <a href="/" class="sidebar-btn">  Main Website</a>
-            <a href="/calendar/" class="sidebar-btn">📅 View Calendar</a>
-            <a href="/about/" class="sidebar-btn">  About Page</a>
-            <a href="/contacts/" class="sidebar-btn">  Contact Center</a>
-            <a href="/logout/" class="sidebar-btn" style="color: #dc2626; margin-top: auto;">  System Logout</a>
-        </aside>
+<aside class="sidebar">
+    <?php if ($is_super_admin || $acc_accounts == 1): ?>
+        <a href="admin_dashboard.php?tab=accounts" class="sidebar-btn <?php echo ($active_tab === 'accounts') ? 'active' : ''; ?>"><span>⚙️ System Accounts</span></a>
+    <?php endif; ?>
 
-        <main class="main-view-pane">
-            
+    <?php if ($is_super_admin || $acc_dir == 1): ?>
+        <a href="admin_dashboard.php?tab=directory" class="sidebar-btn <?php echo ($active_tab === 'directory') ? 'active' : ''; ?>"><span>📁 User Directory</span></a>
+    <?php endif; ?>
+
+    <?php if ($is_super_admin || $acc_cal == 1 || (isset($adminData['Role']) && $adminData['Role'] === 'admin')): ?>
+        <a href="admin_dashboard.php?tab=calendar" class="sidebar-btn <?php echo ($active_tab === 'calendar') ? 'active' : ''; ?>"><span>📅 Project Calendar</span></a>
+    <?php endif; ?>
+
+    <?php if ($is_super_admin || $acc_slides == 1 || (isset($adminData['Role']) && $adminData['Role'] === 'journalist')): ?>
+        <a href="admin_dashboard.php?tab=slides" class="sidebar-btn <?php echo ($active_tab === 'slides') ? 'active' : ''; ?>"><span>🖼️ Carousel Maker</span></a>
+    <?php endif; ?>
+
+    <?php if ($is_super_admin || $acc_eval == 1): ?>
+        <a href="admin_dashboard.php?tab=evaluations" class="sidebar-btn <?php echo ($active_tab === 'evaluations') ? 'active' : ''; ?>"><span>📋 Evaluation System</span></a>
+    <?php endif; ?>
+
+    <?php if ($is_super_admin): ?>
+        <a href="admin_dashboard.php?tab=permissions" class="sidebar-btn <?php echo ($active_tab === 'permissions') ? 'active' : ''; ?>" style="background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b;"><span>🔐 Access Control</span></a>
+    <?php endif; ?>
+
+    <div class="sidebar-divider"></div>
+    <a href="/" class="sidebar-btn">🌐 Main Website</a>
+    <a href="/calendar/" class="sidebar-btn">📆 View Calendar</a>
+    <a href="logout.php" class="sidebar-btn" style="color: #dc2626; margin-top: auto;">🚪 System Logout</a>
+</aside>
+<main class="main-content">            
             <?php if(!empty($update_msg)): ?>
                 <div class="alert alert-success"><?php echo $update_msg; ?></div>
             <?php endif; ?>
@@ -415,12 +582,34 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                                     <td class="table-actions">
                                         <?php if($row['is_verified'] == 0): ?>
                                             <a href="admin_dashboard.php?action=verify&id=<?php echo $row['User_ID']; ?>" class="act-verify" onclick="return confirm('Directly verify this profile manual override?')">Activate</a>
-                                            <?php if(!$is_expired): ?>
-                                                <a href="admin_dashboard.php?action=expire&id=<?php echo $row['User_ID']; ?>" class="act-expire" onclick="return confirm('Force expire verification timestamp parameter window loop legacy?')">Expire Early</a>
-                                            <?php endif; ?>
-                                        <?php else: ?>
-                                            <span class="act-disabled" style="margin-right: 15px; color: #cbd5e1;">Active</span>
-                                        <?php endif; ?>
+<?php 
+$creation_time = $row['code_created_at']; 
+$expire_time = date('Y-m-d H:i:s', strtotime($creation_time . ' + 5 minutes'));
+$current_time = date('Y-m-d H:i:s');
+?>
+
+<?php 
+// 1. Fetch the dynamic expiration limit you saved in the settings panel
+$limit_query = mysqli_query($conn, "SELECT config_value FROM table_config WHERE config_key = 'verification_expiry_limit' LIMIT 1");
+
+if ($limit_query && mysqli_num_rows($limit_query) > 0) {
+    $settings = mysqli_fetch_assoc($limit_query);
+    // PHP's time calculator doesn't like parentheses. We must clean "1 day(s)" into "1 days"
+    $clean_limit = str_replace(array('(', ')'), '', $settings['config_value']);
+    $dynamic_time_string = '+ ' . $clean_limit; 
+} else {
+    // 2. Fallback in case the setting hasn't been saved yet
+    $dynamic_time_string = '+ 5 minutes'; 
+}
+
+// 3. Apply the dynamic time to the code creation timestamp
+$creation_time = $row['code_created_at']; 
+$expire_time = date('Y-m-d H:i:s', strtotime($creation_time . ' ' . $dynamic_time_string));
+$current_time = date('Y-m-d H:i:s');
+?>
+<?php else: ?>
+            <span class="act-disabled" style="margin-right: 15px; color: #cbd5e1;">Active</span>
+        <?php endif; ?>
 
                                         <?php if($row['User_ID'] != $User_ID): ?>
                                             <a href="admin_dashboard.php?action=delete&id=<?php echo $row['User_ID']; ?>" class="act-delete" onclick="return confirm('Permanently wipe this user profile account details permanently?')">Delete</a>
@@ -475,6 +664,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                                     <th>Section</th>
                                     <th>Age / Bday</th>
                                     <th>Contact Info</th>
+				    <th>Eval Permission</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -496,7 +686,12 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                                         <?php if(isset($_GET['edit_id']) && $_GET['edit_id'] == $dir_row['User_ID']): ?>
                                             <form method="POST" action="admin_dashboard.php?tab=directory<?php echo !empty($office_filter) ? '&filter_office='.urlencode($office_filter) : ''; ?>" style="display:flex; flex-direction:column; gap:8px;">
                                                 <input type="hidden" name="edit_user_id" value="<?php echo $dir_row['User_ID']; ?>">
-                                                
+                                                <select name="new_role" style="padding:6px; border:1px solid var(--border); border-radius:4px; font-size:13px; width:100%; font-weight:bold; color:var(--maroon);">
+    <option value="user" <?php echo ($dir_row['Role'] === 'user' || empty($dir_row['Role'])) ? 'selected' : ''; ?>>Standard User (No Tabs)</option>
+    <option value="journalist" <?php echo ($dir_row['Role'] === 'journalist') ? 'selected' : ''; ?>>Journalist (Slides Only)</option>
+    <option value="admin" <?php echo ($dir_row['Role'] === 'admin') ? 'selected' : ''; ?>>Admin (Calendar Only)</option>
+    <option value="super_admin" <?php echo ($dir_row['Role'] === 'super_admin') ? 'selected' : ''; ?>>Super Admin (Full Access)</option>
+</select>
                                                 <select name="new_office" id="editOfficeSelect_<?php echo $dir_row['User_ID']; ?>" onchange="updateEditPositions(<?php echo $dir_row['User_ID']; ?>)" style="padding:6px; border:1px solid var(--border); border-radius:4px; font-size:13px; width:100%;">
                                                     <option value="">No Office</option>
                                                     <?php 
@@ -563,7 +758,37 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                                             <span style="font-size: 12px; color:#cbd5e1;">No FB</span>
                                         <?php endif; ?>
                                     </td>
-                                    
+                                    <td>
+        <span style="font-size: 13px; color: #475569;"><?php echo !empty($dir_row['contact_number']) ? htmlspecialchars($dir_row['contact_number']) : 'No Phone'; ?></span>
+        <br>
+        <?php if(!empty($dir_row['fb_link'])): ?>
+            <a href="<?php echo htmlspecialchars($dir_row['fb_link']); ?>" target="_blank" style="font-size: 12px; color: #3b82f6; text-decoration: none; font-weight: 500;">FB Link</a>
+        <?php else: ?>
+            <span style="font-size: 12px; color:#cbd5e1;">No FB</span>
+        <?php endif; ?>
+    </td>
+    
+    <!-- PASTE YOUR CODE HERE -->
+    <td>
+        <?php if ($dir_row['has_eval_access'] == 1): ?>
+            <a href="admin_dashboard.php?action=toggle_eval&id=<?php echo $dir_row['User_ID']; ?>&status=0" 
+               style="background:#16a34a; color:#fff; padding:4px 8px; border-radius:4px; font-size:11px; text-decoration:none; font-weight:600;">
+               Granted (Revoke)
+            </a>
+        <?php else: ?>
+            <a href="admin_dashboard.php?action=toggle_eval&id=<?php echo $dir_row['User_ID']; ?>&status=1" 
+               style="background:#64748b; color:#fff; padding:4px 8px; border-radius:4px; font-size:11px; text-decoration:none; font-weight:600;">
+               No Access (Grant)
+            </a>
+        <?php endif; ?>
+    </td>
+
+    <td class="table-actions">
+        <?php if(!isset($_GET['edit_id']) || $_GET['edit_id'] != $dir_row['User_ID']): ?>
+            <a href="admin_dashboard.php?tab=directory&edit_id=<?php echo $dir_row['User_ID']; ?><?php echo !empty($office_filter) ? '&filter_office='.urlencode($office_filter) : ''; ?>" class="btn-small">Edit Role</a>
+        <?php endif; ?>
+    </td>
+</tr>
                                     <td class="table-actions">
                                         <?php if(!isset($_GET['edit_id']) || $_GET['edit_id'] != $dir_row['User_ID']): ?>
                                             <a href="admin_dashboard.php?tab=directory&edit_id=<?php echo $dir_row['User_ID']; ?><?php echo !empty($office_filter) ? '&filter_office='.urlencode($office_filter) : ''; ?>" class="btn-small">Edit Role</a>
@@ -781,8 +1006,192 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                     </div>
                 </div>
             <?php endif; ?>
+<!-- TAB 5: EVALUATIONS -->
+            <?php if ($active_tab === 'evaluations'): ?>
+                <h2 class="view-title">Performance Evaluation System</h2>
+                
+                <div class="panel-card">
+                    <h3 style="border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 25px;">New Evaluation Form</h3>
+                    <form action="admin_dashboard.php?tab=evaluations" method="POST">
+                        <div class="form-row-twin">
+                            <div class="form-group">
+                                <label>Evaluatee (Officer / Member) *</label>
+                                <select name="evaluatee_id" id="evalSelect" required onchange="updateOfficerDetails()">
+                                    <option value="">Select Student...</option>
+                                    <?php 
+                                    mysqli_data_seek($eval_members, 0);
+                                    while ($m = mysqli_fetch_assoc($eval_members)): 
+                                    ?>
+                                        <option value="<?php echo $m['User_ID']; ?>" data-office="<?php echo htmlspecialchars($m['office'] ?? ''); ?>" data-position="<?php echo htmlspecialchars($m['position'] ?? ''); ?>">
+                                            <?php echo htmlspecialchars($m['full_name'] ?: $m['Username']); ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Evaluator Name *</label>
+                                <input type="text" name="evaluator_name" value="<?php echo htmlspecialchars($adminData['Username']); ?>" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row-twin">
+                            <div class="form-group">
+                                <label>Department / Office</label>
+                                <input type="text" id="officerDept" readonly style="background:#e2e8f0;">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Assessment *</label>
+                                <input type="date" name="assessment_date" value="<?php echo date('Y-m-d'); ?>" required>
+                            </div>
+                        </div>
 
-        </main>
+                        <div class="table-container" style="margin-top: 20px; border: 1px solid var(--border); border-radius: 8px;">
+                            <table style="margin: 0;">
+                                <thead style="background: #f8fafc;">
+                                    <tr>
+                                        <th>Performance Indicator</th>
+                                        <th style="text-align:center;">Excellent (10)</th>
+                                        <th style="text-align:center;">Good (8)</th>
+                                        <th style="text-align:center;">Fair (5)</th>
+                                        <th style="text-align:center;">Poor (3)</th>
+                                        <th style="text-align:center;">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($indicators as $idx => $ind): ?>
+                                    <tr>
+                                        <td style="font-size: 13px;"><?php echo $ind; ?></td>
+                                        <td style="text-align:center;"><input type="radio" name="ind_<?php echo $idx; ?>" value="10" checked onchange="calcTotal()"></td>
+                                        <td style="text-align:center;"><input type="radio" name="ind_<?php echo $idx; ?>" value="8" onchange="calcTotal()"></td>
+                                        <td style="text-align:center;"><input type="radio" name="ind_<?php echo $idx; ?>" value="5" onchange="calcTotal()"></td>
+                                        <td style="text-align:center;"><input type="radio" name="ind_<?php echo $idx; ?>" value="3" onchange="calcTotal()"></td>
+                                        <td style="text-align:center; font-weight:bold; color:var(--maroon);" id="score_<?php echo $idx; ?>">10</td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="background: #fef2f2; border-left: 4px solid var(--maroon); padding: 15px; margin: 20px 0; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                            <strong style="color: #991b1b;">Total Evaluation Score (Average)</strong>
+                            <strong style="color: var(--maroon); font-size: 18px;" id="totalScoreDisplay">10.00</strong>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Comments & Recommendations *</label>
+                            <textarea name="comments" rows="4" placeholder="Provide constructive feedback regarding duties, conduct, and growth areas..." required></textarea>
+                        </div>
+
+                        <button type="submit" name="submit_eval" class="btn-action">Submit Evaluation</button>
+                    </form>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Past Evaluations <span style="background: var(--maroon); color: #fff; padding: 2px 8px; border-radius: 20px; font-size: 12px; margin-left: 5px;"><?php echo mysqli_num_rows($eval_records); ?></span></h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Evaluatee</th>
+                                    <th>Evaluator</th>
+                                    <th>Date</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if(mysqli_num_rows($eval_records) == 0): ?>
+                                <tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 30px;">No evaluations recorded yet.</td></tr>
+                                <?php else: ?>
+                                    <?php while($ev = mysqli_fetch_assoc($eval_records)): ?>
+                                    <tr>
+                                        <td>
+                                            <strong style="color: #0f172a; font-size: 14px;"><?php echo htmlspecialchars($ev['full_name'] ?: $ev['Username']); ?></strong><br>
+                                            <span style="color: #64748b; font-size: 12px;"><?php echo htmlspecialchars($ev['office']); ?></span>
+                                        </td>
+                                        <td><span style="font-size: 13px;"><?php echo htmlspecialchars($ev['evaluator_name']); ?></span></td>
+                                        <td><span style="font-size: 13px;"><?php echo $ev['assessment_date']; ?></span></td>
+                                        <td><strong style="color: <?php echo ($ev['total_score'] >= 8) ? '#16a34a' : 'var(--maroon)'; ?>;"><?php echo $ev['total_score']; ?></strong></td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php endif; ?>
+        
+<!-- TAB 6: ACCESS CONTROL / PERMISSIONS -->
+            <?php if ($active_tab === 'permissions' && $is_super_admin): ?>
+                <h2 class="view-title">Granular Access Control</h2>
+                <div class="panel-card">
+                    <h3>Grant Specific Tab Access to Members</h3>
+                    <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Use the checkboxes below to select exactly which dashboard features each student can see and use.</p>
+                    
+                    <?php 
+                    $selected_office = isset($_GET['office_filter']) ? mysqli_real_escape_string($conn, $_GET['office_filter']) : ''; 
+                    ?>
+                    <div style="margin-bottom: 20px; background: #f1f5f9; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px;">
+                        <strong style="font-size: 14px; color: #334155;">Filter by Department:</strong>
+                        <form method="GET" action="admin_dashboard.php" style="margin: 0;">
+                            <input type="hidden" name="tab" value="permissions">
+                            <select name="office_filter" onchange="this.form.submit()" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; min-width: 250px;">
+                                <option value="">-- Show All Offices --</option>
+                                <?php 
+                                $offices_query = mysqli_query($conn, "SELECT DISTINCT office FROM table_user WHERE office IS NOT NULL AND office != '' ORDER BY office ASC");
+                                while($off = mysqli_fetch_assoc($offices_query)): 
+                                ?>
+                                    <option value="<?php echo htmlspecialchars($off['office']); ?>" <?php echo ($selected_office === $off['office']) ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($off['office']); ?>
+                                    </option>
+                                <?php endwhile; ?>
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead style="background: #f8fafc;">
+                                <tr>
+                                    <th>User & Department</th>
+                                    <th>Allowed Sidebar Tabs</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                if ($selected_office) {
+                                    $perm_users = mysqli_query($conn, "SELECT * FROM table_user WHERE office = '$selected_office' ORDER BY full_name ASC");
+                                } else {
+                                    $perm_users = mysqli_query($conn, "SELECT * FROM table_user ORDER BY office ASC, full_name ASC");
+                                }
+                                while($pu = mysqli_fetch_assoc($perm_users)): 
+                                ?>
+                                <tr>
+                                    <td>
+                                        <strong style="color: #0f172a; font-size: 15px;"><?php echo htmlspecialchars($pu['full_name'] ?: $pu['Username']); ?></strong><br>
+                                        <span style="font-size:12px; color:var(--maroon); font-weight: 600;"><?php echo htmlspecialchars($pu['office']); ?></span>
+                                    </td>
+                                    <form method="POST" action="admin_dashboard.php?tab=permissions<?php echo !empty($selected_office) ? '&office_filter='.urlencode($selected_office) : ''; ?>">
+                                        <input type="hidden" name="perm_user_id" value="<?php echo $pu['User_ID']; ?>">
+                                        <td style="line-height: 2;">
+                                            <label style="cursor: pointer; margin-right: 15px;"><input type="checkbox" name="p_acc" <?php echo ($pu['access_accounts']==1)?'checked':''; ?>> System Accounts</label>
+                                            <label style="cursor: pointer; margin-right: 15px;"><input type="checkbox" name="p_dir" <?php echo ($pu['access_directory']==1)?'checked':''; ?>> User Directory</label><br>
+                                            <label style="cursor: pointer; margin-right: 15px;"><input type="checkbox" name="p_cal" <?php echo ($pu['access_calendar']==1)?'checked':''; ?>> Project Calendar</label>
+                                            <label style="cursor: pointer; margin-right: 15px;"><input type="checkbox" name="p_sli" <?php echo ($pu['access_slides']==1)?'checked':''; ?>> Carousel Maker</label><br>
+                                            <label style="cursor: pointer;"><input type="checkbox" name="p_eva" <?php echo ($pu['has_eval_access']==1)?'checked':''; ?>> Evaluation System</label>
+                                        </td>
+                                        <td>
+                                            <button type="submit" name="update_permissions" style="background: #3b82f6; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">Save Access</button>
+                                        </td>
+                                    </form>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php endif; ?>
+</main>
     </div>
 
     <footer>
@@ -840,6 +1249,60 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'accounts';
                 positionSelect.add(new Option("Staff Member", "Staff Member"));
             }
         }
-    </script>
+function updateOfficerDetails() {
+            const select = document.getElementById('evalSelect');
+            if(!select) return;
+            const selected = select.options[select.selectedIndex];
+            document.getElementById('officerDept').value = selected.getAttribute('data-office') || 'N/A';
+        }
+
+        function calcTotal() {
+            const scoreDisplay = document.getElementById('totalScoreDisplay');
+            if(!scoreDisplay) return;
+            
+            let sum = 0;
+            const totalIndicators = 14; 
+            for (let i = 0; i < totalIndicators; i++) {
+                const radios = document.getElementsByName('ind_' + i);
+                let rowScore = 0;
+                for (const r of radios) {
+                    if (r.checked) {
+                        rowScore = parseInt(r.value);
+                        break;
+                    }
+                }
+                document.getElementById('score_' + i).innerText = rowScore;
+                sum += rowScore;
+            }
+            const avg = (sum / totalIndicators).toFixed(2);
+            scoreDisplay.innerText = avg;
+        }
+        
+        if (document.getElementById('evalSelect')) {
+            calcTotal();
+        }    
+function updateTimers() {
+    const timers = document.querySelectorAll('.countdown-timer');
+    const now = new Date().getTime();
+
+    timers.forEach(timer => {
+        // Parse the PHP expiration time securely
+        const expireTime = new Date(timer.getAttribute('data-expire').replace(/-/g, "/")).getTime();
+        const distance = expireTime - now;
+
+        if (distance < 0) {
+            timer.innerHTML = "<span style='color: #dc2626; font-weight: bold;'>Expired / Canceled</span>";
+        } else {
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            timer.innerHTML = "<span style='color: #d97706; font-weight: bold;'>" + minutes + "m " + seconds + "s remaining</span>";
+        }
+    });
+}
+if (document.querySelector('.countdown-timer')) {
+    setInterval(updateTimers, 1000);
+    updateTimers();
+}
+</script>
 </body>
 </html>
